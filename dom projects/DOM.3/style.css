@@ -52,11 +52,11 @@ main {
     left : 50%;
     transform : translate(-50%,-50%) scale(0) rotate(-60deg);
     opacity: 0;
-    
-    background-size : cover;
-    background : linear-gradient(to right bottom, rgb(187, 29, 187), rgb(239, 11, 148));
+);
+    background-size: cover;
+    background: linear-gradient(to right bottom, rgb(187, 29, 187), rgb(239, 11, 148));
     color : transparent;
-    background-clip : text;
-    -webkit-background-clip : text;
+    background-clip: text;
+    -webkit-background-clip: text;
    transition: all cubic-bezier(.65,1,.77,1.44) 0.4s;
 }
