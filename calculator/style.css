@@ -1,0 +1,21 @@
+*{
+margin : 0;
+padding : 0;
+box-sizing: border-box;
+} 
+
+html body {
+    height : 100%;
+    width : 100%;
+    background-color: black;
+}
+ #clc{
+    
+    height : 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+h1{
+    color : rgb(216, 159, 159);
+}
