@@ -1,8 +1,8 @@
 class TaxCalculator {
   constructor() {
     this.salary = 0;
-    this.rent = 0;
-    this.netRent = 0;
+    this.rentalIncome = 0;
+    this.netRentalIncome = 0;
     this.deduction80C = 0;
     this.regime = "new"; 
   }
@@ -13,14 +13,14 @@ class TaxCalculator {
     return this;
   }
 
-  addRent(amount) {
-    if (amount < 0) throw new Error("Invalid rent");
-    this.rent = amount;
-    this.netRent = amount * 0.7; 
+  addRentalIncome(amount) {
+    if (amount < 0) throw new Error("Invalid rental income");
+    this.rentalIncome = amount;
+    this.netRentalIncome = amount * 0.7; 
     return this;
   }
 
-  add80Cdeduction80C(amount) {
+  add80CDeduction(amount) {
     this.deduction80C = Math.min(amount, 150000);
     return this;
   }
@@ -31,29 +31,25 @@ class TaxCalculator {
   }
 
   calculateTax() {
-    let taxableIncome = this.salary + this.netRent;
+    let taxableIncome = this.salary + this.netRentalIncome;
     let tax = 0;
 
-   
     if (this.salary > 0) {
       taxableIncome -= this.regime === "old" ? 50000 : 75000;
     }
 
-    
     if (this.regime === "old") {
       taxableIncome -= this.deduction80C;
     }
 
     taxableIncome = Math.max(taxableIncome, 0);
 
-  
     if (this.regime === "old") {
       tax = this.calculateOldTax(taxableIncome);
     } else {
       tax = this.calculateNewTax(taxableIncome);
     }
 
-    
     tax += tax * 0.04;
 
     return Math.round(tax);
@@ -100,9 +96,9 @@ class TaxCalculator {
 const taxCalculator = new TaxCalculator();
 
 const tax = taxCalculator
-  .addSalary(800000)
-  .addRent(150000)
-  .add80Cdeduction80C(50000)
+  .addSalary(900000)
+  .addRentalIncome(150000)
+  .add80CDeduction(50000)
   .chooseRegime("old")
   .calculateTax();
 
