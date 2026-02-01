@@ -1,22 +1,35 @@
 class TaxCalculator {
   constructor() {
     this.salary = 0;
+    this.basicSalary = 0;
     this.rentalIncome = 0;
     this.netRentalIncome = 0;
+
+    this.hraReceived = 0;
+    this.rentPaid = 0;
+    this.cityType = null;
+    this.hraExemption = 0;
+
     this.deduction80C = 0;
-    this.regime = "new"; 
+    this.regime = "new";
   }
 
-  addSalary(amount) {
-    if (amount < 0) throw new Error("Invalid salary");
+  addSalary(amount, basicSalary) {
     this.salary = amount;
+    this.basicSalary = basicSalary;
     return this;
   }
 
   addRentalIncome(amount) {
-    if (amount < 0) throw new Error("Invalid rental income");
     this.rentalIncome = amount;
-    this.netRentalIncome = amount * 0.7; 
+    this.netRentalIncome = amount * 0.7;
+    return this;
+  }
+
+  addHRA(hraReceived, rentPaid, cityType) {
+    this.hraReceived = hraReceived;
+    this.rentPaid = rentPaid;
+    this.cityType = cityType;
     return this;
   }
 
@@ -30,6 +43,23 @@ class TaxCalculator {
     return this;
   }
 
+  calculateHRAExemption() {
+    if (this.regime !== "old") return 0;
+
+    const option1 = this.hraReceived;
+    const option2 = Math.max(
+      this.rentPaid - (0.1 * this.basicSalary),
+      0
+    );
+
+    const option3 =
+      this.cityType === "metro"
+        ? 0.5 * this.basicSalary
+        : 0.4 * this.basicSalary;
+
+    return Math.min(option1, option2, option3);
+  }
+
   calculateTax() {
     let taxableIncome = this.salary + this.netRentalIncome;
     let tax = 0;
@@ -39,19 +69,19 @@ class TaxCalculator {
     }
 
     if (this.regime === "old") {
+      this.hraExemption = this.calculateHRAExemption();
+      taxableIncome -= this.hraExemption;
       taxableIncome -= this.deduction80C;
     }
 
     taxableIncome = Math.max(taxableIncome, 0);
 
-    if (this.regime === "old") {
-      tax = this.calculateOldTax(taxableIncome);
-    } else {
-      tax = this.calculateNewTax(taxableIncome);
-    }
+    tax =
+      this.regime === "old"
+        ? this.calculateOldTax(taxableIncome)
+        : this.calculateNewTax(taxableIncome);
 
     tax += tax * 0.04;
-
     return Math.round(tax);
   }
 
@@ -93,11 +123,10 @@ class TaxCalculator {
     return tax;
   }
 }
-const taxCalculator = new TaxCalculator();
-
-const tax = taxCalculator
-  .addSalary(900000)
+const tax = new TaxCalculator()
+  .addSalary(800000, 720000)
   .addRentalIncome(150000)
+  .addHRA(360000, 300000, "metro")
   .add80CDeduction(50000)
   .chooseRegime("old")
   .calculateTax();
