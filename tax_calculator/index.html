@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Income Tax Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Income Tax Calculator (India)</h1>
+        <form id="taxForm">
+            <label>Salary Income (₹):</label>
+            <input type="number" id="salary" required min="0">
+
+            <label>Rental Income (₹):</label>
+            <input type="number" id="rentIncome" required min="0">
+
+            <label>HRA Received (₹):</label>
+            <input type="number" id="hra" min="0">
+
+            <label>Rent Paid (₹):</label>
+            <input type="number" id="rentPaid" min="0">
+
+            <label>City Type:</label>
+            <select id="cityType">
+                <option value="metro">Metro</option>
+                <option value="non-metro">Non-Metro</option>
+            </select>
+
+            <label>Section 80C Deduction (₹):</label>
+            <input type="number" id="deduction80C" min="0">
+
+            <label>Tax Regime:</label>
+            <select id="taxRegime">
+                <option value="old">Old Regime</option>
+                <option value="new">New Regime</option>
+            </select>
+
+            <button type="button" id="calculateBtn">Calculate Tax</button>
+            <button type="reset">Reset</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
