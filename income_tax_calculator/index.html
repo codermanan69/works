@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Income Tax Calculator (FY 2025-26)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Income Tax Calculator</h1>
+        <p class="subtitle">Financial Year 2025–26</p>
+
+        <form id="taxForm">
+
+            <div class="form-group">
+                <label>Annual Salary Income (₹)</label>
+                <input type="number" id="salary" placeholder="Enter annual salary" required>
+            </div>
+
+            <div class="form-group">
+                <label>Annual Rental Income (₹)</label>
+                <input type="number" id="rentIncome" placeholder="Enter rental income (optional)">
+            </div>
+
+            <div class="form-group">
+                <label>Tax Regime</label>
+                <select id="regime">
+                    <option value="new">New Tax Regime</option>
+                    <option value="old">Old Tax Regime</option>
+                </select>
+            </div>
+
+            <div id="oldRegimeFields" class="hidden">
+
+                <div class="form-group">
+                    <label>HRA Component (₹)</label>
+                    <input type="number" id="hra" placeholder="HRA received annually">
+                </div>
+
+                <div class="form-group">
+                    <label>Annual Rent Paid (₹)</label>
+                    <input type="number" id="annualRent" placeholder="Total rent paid">
+                </div>
+
+                <div class="form-group">
+                    <label>Section 80C Deduction (₹)</label>
+                    <input type="number" id="section80C" placeholder="Max ₹1,50,000">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isMetro">
+                    <label for="isMetro">Living in Metro City</label>
+                </div>
+
+            </div>
+
+            <button type="submit" id="calculateBtn">Calculate Tax</button>
+
+            <div id="loader" class="hidden">Calculating tax...</div>
+            <div id="error" class="error hidden"></div>
+
+        </form>
+
+        <div id="result" class="result hidden"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
