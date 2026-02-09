@@ -10,6 +10,9 @@ form.addEventListener("submit", async function (e) {
     resultBox.innerHTML = "";
     loader.style.display = "block";
 
+    resultBox.classList.add("hidden");
+
+
     const salary = Number(document.getElementById("salary").value);
     const rentIncome = Number(document.getElementById("rentIncome").value) || 0;
     const hra = Number(document.getElementById("hra").value) || 0;
@@ -33,7 +36,7 @@ form.addEventListener("submit", async function (e) {
     if (regime === "old") {
         payload.hraComponent = hra;
         payload.annualRent = annualRent;
-        payload.section80C = Math.min(section80C, 150000);
+        payload.section80C = section80C;
         payload.isMetro = isMetro;
     }
 
@@ -48,34 +51,24 @@ form.addEventListener("submit", async function (e) {
             body: JSON.stringify(payload)
         });
 
+        if (!response.ok) {
+            throw new Error("API request failed");
+        }
+
         const data = await response.json();
         loader.style.display = "none";
         displayResult(data);
 
     } catch (error) {
-        console.error("API failed due to CORS. Showing mock data.");
-
-        const mockData = {
-            regime: payload.regime,
-            grossIncome: payload.incomeFromSalary + payload.incomeFromRent,
-            totalDeductions: regime === "old" ? 200000 : 75000,
-            taxableIncome: 550000,
-            incomeTax: 30000,
-            cess: 1200,
-            totalTaxLiability: 31200,
-            breakdown: {
-                standardDeduction: regime === "old" ? 50000 : 75000,
-                hraExemption: regime === "old" ? 150000 : 0,
-                section80C: regime === "old" ? payload.section80C || 0 : 0
-            }
-        };
-
         loader.style.display = "none";
-        displayResult(mockData);
+        alert("Something went wrong while calculating tax. Please try again.");
+        console.error(error);
     }
 });
 
 function displayResult(data) {
+    resultBox.classList.remove("hidden");
+
     resultBox.innerHTML = `
         <h3>Tax Regime: ${data.regime.toUpperCase()}</h3>
 
@@ -86,7 +79,7 @@ function displayResult(data) {
         <hr>
 
         <p><strong>Income Tax:</strong> ₹${data.incomeTax.toLocaleString()}</p>
-        <p><strong>Health & Education Cess (4%):</strong> ₹${data.cess.toLocaleString()}</p>
+        <p><strong>Cess:</strong> ₹${data.cess.toLocaleString()}</p>
 
         <h2>Total Tax Liability: ₹${data.totalTaxLiability.toLocaleString()}</h2>
     `;
