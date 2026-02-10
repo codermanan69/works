@@ -3,6 +3,17 @@ const API_URL = "https://it-calculator-service.vercel.app/calculate-tax";
 const form = document.getElementById("taxForm");
 const resultBox = document.getElementById("result");
 const loader = document.getElementById("loader");
+const regimeSelect = document.getElementById("regime");
+const oldRegimeFields = document.getElementById("oldRegimeFields");
+
+regimeSelect.addEventListener("change", function () {
+  if (regimeSelect.value === "old") {
+    oldRegimeFields.classList.remove("hidden");
+  } else {
+    oldRegimeFields.classList.add("hidden");
+  }
+});
+
 
 form.addEventListener("submit", async function (e) {
     e.preventDefault();
